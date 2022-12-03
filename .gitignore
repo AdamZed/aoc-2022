@@ -1,0 +1,13 @@
+# misc
+**/.DS_Store
+
+# compiled files
+**/__pycache__
+**/*.o
+
+# input files
+**/input.txt
+**/sample.txt
+
+# private
+.aoc_session
