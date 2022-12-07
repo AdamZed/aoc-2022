@@ -2,8 +2,9 @@
 
 set -e
 
-if [[ ! -f "bootstrap.sh" ]]; then
+if [[ ! -f "aocday.sh" ]]; then
     echo "Please run from within root of AoC directory"
+    exit
 fi
 
 if [[ -z ${1} ]]; then
