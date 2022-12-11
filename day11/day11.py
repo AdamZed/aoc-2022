@@ -1,3 +1,4 @@
+from functools import reduce
 import re
 from operator import mul, add
 
@@ -15,11 +16,21 @@ class Monkey:
         self.inspections = 0
         
     def run_round(self, monkeys):
+        self.inspections += len(self.in_hand)
         for item in self.in_hand:
-            self.inspections+=1
             op, mag = self.operations
             mag = item if mag == 'old' else int(mag)
             new = OPS[op](item, mag)//3
+            pass_to = self.ifs[new % self.test == 0]
+            monkeys[pass_to].in_hand.append(new)
+        self.in_hand.clear()
+
+    def run_round2(self, monkeys, modu):
+        self.inspections += len(self.in_hand)
+        for item in self.in_hand:
+            op, mag = self.operations
+            mag = item if mag == 'old' else int(mag)
+            new = OPS[op](item, mag) % modu
             pass_to = self.ifs[new % self.test == 0]
             monkeys[pass_to].in_hand.append(new)
         self.in_hand.clear()
@@ -31,8 +42,8 @@ class Solution:
 
     def __init__(self, fname):
         self.data = self.parse_file(fname)
-        
         print(f'Part 1: {self.part1()}')
+        self.data = self.parse_file(fname)
         print(f'Part 2: {self.part2()}')
 
     def parse_file(self, fname):
@@ -47,7 +58,12 @@ class Solution:
         return inspects[-1] * inspects[-2]
 
     def part2(self):
-        pass
+        modu = reduce(mul, (m.test for m in self.data))
+        for _ in range(10000):
+            for monkey in self.data:
+                monkey.run_round2(self.data, modu)
+        inspects = sorted([m.inspections for m in self.data])
+        return inspects[-1] * inspects[-2]
 
 
 if __name__ == "__main__":
