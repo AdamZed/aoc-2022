@@ -14,10 +14,8 @@ class Solution:
         return max(sum(elf) for elf in self.data)
 
     def part2(self):
-        import heapq
-        cals = [sum(elf) for elf in self.data]
-        heapq.heapify(cals)
-        return sum(heapq.nlargest(3, cals))
+        cals = sorted([sum(elf) for elf in self.data])
+        return sum(cals[-3:])
 
 
 if __name__ == "__main__":
