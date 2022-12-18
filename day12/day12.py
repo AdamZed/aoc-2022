@@ -1,5 +1,4 @@
 from copy import copy
-from curses import can_change_color
 
 DIRS = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 
@@ -29,8 +28,7 @@ class Solution:
         if c2 == 'E' and c1 == 'z': return True
         return ord(self.data[x2][y2]) - ord(self.data[x1][y1]) <= 1
 
-    def part1(self):
-        q = [[self.S]]
+    def search(self, q):
         seen = set()
         while q:
             path = q.pop(0)
@@ -45,24 +43,14 @@ class Solution:
                     _path = copy(path)
                     _path.append((nx, ny))
                     q.append(_path)
+
+    def part1(self):
+        return self.search([[self.S]])
                 
     def part2(self):
         q = [[self.S]] + \
             [[(x, y)] for x in range(self.MX) for y in range(self.MY) if self.data[x][y] == 'a']
-        seen = set()
-        while q:
-            path = q.pop(0)
-            x, y = path[-1]
-            if (x, y) in seen: continue
-            seen.add((x, y))
-            for (dx, dy) in DIRS:
-                nx, ny = x+dx, y+dy
-                if (nx, ny) in path: continue
-                if self.can_step(x, y, nx, ny):
-                    if self.data[nx][ny] == 'E': return len(path)
-                    _path = copy(path)
-                    _path.append((nx, ny))
-                    q.append(_path)
+        return self.search(q)
 
 if __name__ == "__main__":
     import sys
