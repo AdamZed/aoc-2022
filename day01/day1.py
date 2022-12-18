@@ -14,9 +14,7 @@ class Solution:
         return max(sum(elf) for elf in self.data)
 
     def part2(self):
-        cals = sorted([sum(elf) for elf in self.data])
-        return sum(cals[-3:])
-
+        return sum(sorted([sum(elf) for elf in self.data])[-3:])
 
 if __name__ == "__main__":
     import sys
